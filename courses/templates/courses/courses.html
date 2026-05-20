@@ -1,0 +1,34 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+
+<h2>Courses</h2>
+
+<table class="table table-bordered shadow">
+
+    <thead class="table-dark">
+        <tr>
+            <th>Course</th>
+            <th>Faculty</th>
+            <th>Duration</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for course in courses %}
+        <tr>
+            <td>{{ course.course_name }}</td>
+            <td>{{ course.faculty_name }}</td>
+            <td>{{ course.duration }}</td>
+            <td>
+                <a href="/update/{{ course.id }}/" class="btn btn-sm btn-primary">Edit</a>
+                <a href="/delete/{{ course.id }}/" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}
