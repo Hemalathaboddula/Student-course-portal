@@ -11,6 +11,15 @@ body {
     background: white;
 }
 
-.card {
+/* .card {
     border-radius: 15px;
+} */
+
+
+.card {
+    border-radius: 12px;
+}
+
+body {
+    background-color: #f8f9fa;
 }

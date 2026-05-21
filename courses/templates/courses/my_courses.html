@@ -1,0 +1,31 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+
+<h5 class="mb-4">My Learning</h5>
+
+<div class="row">
+
+{% for course in courses %}
+<div class="col-md-4 mb-4">
+
+    <div class="card shadow p-3 text-center">
+
+        <h5>{{ course.course_name }}</h5>
+        <p>{{ course.faculty_name }}</p>
+
+        <a href="{{ course.course_link }}" target="_blank"
+           class="btn btn-success mt-2">
+           ▶ Continue Learning
+        </a>
+
+    </div>
+
+</div>
+{% empty %}
+<p>No enrolled courses yet.</p>
+{% endfor %}
+
+</div>
+
+{% endblock %}

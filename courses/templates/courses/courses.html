@@ -1,4 +1,4 @@
-{% extends 'courses/base.html' %}
+<!-- {% extends 'courses/base.html' %}
 
 {% block content %}
 
@@ -30,5 +30,36 @@
     </tbody>
 
 </table>
+
+{% endblock %} -->
+
+
+{% extends 'courses/base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">My Enrolled Courses</h2>
+
+<div class="row">
+
+{% for course in courses %}
+    <div class="col-md-4 mb-4">
+        <div class="card shadow p-3">
+
+            <h5>{{ course.course_name }}</h5>
+            <p>{{ course.faculty_name }}</p>
+            <p>{{ course.duration }}</p>
+
+            <a href="{{ course.course_link }}" target="_blank" class="btn btn-success">
+                ▶ Start Learning
+            </a>
+
+        </div>
+    </div>
+{% empty %}
+    <p>No enrolled courses yet.</p>
+{% endfor %}
+
+</div>
 
 {% endblock %}
