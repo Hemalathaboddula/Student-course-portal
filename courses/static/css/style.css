@@ -1,25 +1,26 @@
 body {
     background-color: #f4f6f9;
-    font-family: Arial;
 }
-
-.navbar {
-    padding: 15px;
-}
-
-.table {
-    background: white;
-}
-
-/* .card {
-    border-radius: 15px;
-} */
-
 
 .card {
     border-radius: 12px;
+    transition: all 0.3s ease;
 }
 
-body {
-    background-color: #f8f9fa;
+.card:hover {
+    transform: scale(1.03);
+}
+
+.course-img {
+    height: 180px;
+    object-fit: cover;
+}
+
+.rating {
+    color: #f4c150;
+    font-weight: bold;
+}
+
+.progress {
+    height: 8px;
 }

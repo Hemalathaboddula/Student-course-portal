@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
 from .models import Course, Student
 
 
@@ -60,46 +61,6 @@ def dashboard(request):
         'courses': courses,
         'enrolled_courses': enrolled_courses
     })
-
-
-# ✅ ADD COURSE
-@login_required
-def add_course(request):
-    if request.method == 'POST':
-        Course.objects.create(
-            course_name=request.POST.get('course_name'),
-            faculty_name=request.POST.get('faculty_name'),
-            duration=request.POST.get('duration'),
-            course_link=request.POST.get('course_link')
-        )
-        return redirect('dashboard')
-
-    return render(request, 'courses/add_course.html')
-
-
-# ✅ EDIT COURSE
-@login_required
-def edit_course(request, id):
-    course = get_object_or_404(Course, id=id)
-
-    if request.method == 'POST':
-        course.course_name = request.POST.get('course_name')
-        course.faculty_name = request.POST.get('faculty_name')
-        course.duration = request.POST.get('duration')
-        course.course_link = request.POST.get('course_link')
-        course.save()
-
-        return redirect('dashboard')
-
-    return render(request, 'courses/edit_course.html', {'course': course})
-
-
-# ✅ DELETE COURSE
-@login_required
-def delete_course(request, id):
-    course = get_object_or_404(Course, id=id)
-    course.delete()
-    return redirect('dashboard')
 
 
 # ✅ ENROLL

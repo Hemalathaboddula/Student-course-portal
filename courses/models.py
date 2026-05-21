@@ -6,11 +6,17 @@ class Course(models.Model):
     course_name = models.CharField(max_length=100)
     faculty_name = models.CharField(max_length=100)
     duration = models.CharField(max_length=50)
-    course_link = models.URLField(blank=True)
+    course_link = models.URLField()
 
-    # ✅ New fields
-    image = models.ImageField(upload_to='course_images/', blank=True, null=True)
     rating = models.FloatField(default=4.0)
+
+    CATEGORY_CHOICES = [
+        ('python', 'Python'),
+        ('aws', 'AWS'),
+        ('ai', 'AI'),
+    ]
+
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='python')
 
     def __str__(self):
         return self.course_name

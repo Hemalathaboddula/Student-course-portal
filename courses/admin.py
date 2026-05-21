@@ -2,20 +2,24 @@ from django.contrib import admin
 from .models import Course, Student
 
 
-@admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('course_name', 'faculty_name', 'duration', 'rating')
-    search_fields = ('course_name', 'faculty_name')
+    list_display = ('course_name', 'faculty_name', 'duration', 'rating', 'category')
+
+    # ✅ NO IMAGE FIELD HERE
+    fields = (
+        'course_name',
+        'faculty_name',
+        'duration',
+        'course_link',
+        'rating',
+        'category'
+    )
 
 
-@admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('user',)
     filter_horizontal = ('courses',)
 
-    # ✅ Enable mass deletion
-    actions = ['delete_selected']
 
-
-# ✅ Add default delete action
-admin.site.add_action(admin.actions.delete_selected)
+admin.site.register(Course, CourseAdmin)
+admin.site.register(Student, StudentAdmin)
