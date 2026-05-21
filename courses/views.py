@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from .models import Course, Student
 
 
@@ -27,15 +28,30 @@ def logout_view(request):
     return redirect('login')
 
 
+# ✅ SIGNUP
+def signup_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if User.objects.filter(username=username).exists():
+            return render(request, 'courses/signup.html', {'error': 'Username already exists'})
+
+        User.objects.create_user(username=username, password=password)
+        return redirect('login')
+
+    return render(request, 'courses/signup.html')
+
+
+# ✅ FORGOT PASSWORD
+def forgot_password_view(request):
+    return render(request, 'courses/forgot.html')
+
+
 # ✅ DASHBOARD
 @login_required
 def dashboard(request):
-    query = request.GET.get('q')
-
-    if query:
-        courses = Course.objects.filter(course_name__icontains=query)
-    else:
-        courses = Course.objects.all()
+    courses = Course.objects.all()
 
     student, _ = Student.objects.get_or_create(user=request.user)
     enrolled_courses = student.courses.all()
@@ -44,13 +60,6 @@ def dashboard(request):
         'courses': courses,
         'enrolled_courses': enrolled_courses
     })
-
-
-# ✅ COURSE LIST (ADMIN VIEW)
-@login_required
-def course_list(request):
-    courses = Course.objects.all()
-    return render(request, 'courses/courses.html', {'courses': courses})
 
 
 # ✅ ADD COURSE
@@ -63,7 +72,7 @@ def add_course(request):
             duration=request.POST.get('duration'),
             course_link=request.POST.get('course_link')
         )
-        return redirect('courses')
+        return redirect('dashboard')
 
     return render(request, 'courses/add_course.html')
 
@@ -79,7 +88,8 @@ def edit_course(request, id):
         course.duration = request.POST.get('duration')
         course.course_link = request.POST.get('course_link')
         course.save()
-        return redirect('courses')
+
+        return redirect('dashboard')
 
     return render(request, 'courses/edit_course.html', {'course': course})
 
@@ -89,10 +99,10 @@ def edit_course(request, id):
 def delete_course(request, id):
     course = get_object_or_404(Course, id=id)
     course.delete()
-    return redirect('courses')
+    return redirect('dashboard')
 
 
-# ✅ ENROLL COURSE
+# ✅ ENROLL
 @login_required
 def enroll(request, course_id):
     course = get_object_or_404(Course, id=course_id)
@@ -108,9 +118,6 @@ def enroll(request, course_id):
 # ✅ MY COURSES
 @login_required
 def my_courses(request):
-    if request.user.is_staff:
-        return redirect('courses')
-
     student, _ = Student.objects.get_or_create(user=request.user)
     courses = student.courses.all()
 
