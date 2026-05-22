@@ -1,49 +1,52 @@
-# 👉 Python
+# =========================
+# Python (Django)
+# =========================
+venv/
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
 *.pyd
-
-# 👉 Virtual Environment
-venv/
-env/
-ENV/
-
-# 👉 Django
-*.log
-local_settings.py
 db.sqlite3
-db.sqlite3-journal
+*.log
 
-# 👉 Static & media
+# =========================
+# Environment variables
+# =========================
+.env
+
+# =========================
+# Secrets / Keys (VERY IMPORTANT)
+# =========================
+*.pem
+*.key
+
+# =========================
+# Django static/media (optional)
+# =========================
 staticfiles/
 media/
 
-# 👉 Environment variables
-.env
+# =========================
+# Terraform (VERY IMPORTANT)
+# =========================
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
 
-# 👉 VS Code / IDE
-.vscode/
-.idea/
+# =========================
+# Ansible
+# =========================
+*.retry
 
-# 👉 OS files
+# =========================
+# OS files
+# =========================
 .DS_Store
 Thumbs.db
 
-# 👉 Terraform
-infra/terraform/.terraform/
-infra/terraform/*.tfstate
-infra/terraform/*.tfstate.backup
-
-# 👉 Ansible temp files
-*.retry
-
-# 👉 Node modules (if added later)
-node_modules/
-
-# 👉 Logs
-*.log
-
-# 👉 Gunicorn / deployment
-*.pid
-*.sock
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/

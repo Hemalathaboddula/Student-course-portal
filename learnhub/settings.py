@@ -63,4 +63,5 @@ LOGIN_URL = '/login/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+ALLOWED_HOSTS = ['13.207.38.93', '127.0.0.1', 'localhost']
 

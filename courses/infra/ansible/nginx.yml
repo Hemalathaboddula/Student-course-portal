@@ -1,0 +1,60 @@
+- hosts: web
+  become: yes
+
+  tasks:
+
+    - name: Install packages
+      yum:
+        name:
+          - git
+          - python3
+          - python3-pip
+          - postgresql15
+        state: present
+
+    - name: Install Python dependencies
+      pip:
+        requirements: /home/ec2-user/app/requirements.txt
+
+    - name: Install PostgreSQL driver
+      pip:
+        name: psycopg2-binary
+
+    - name: Install nginx
+      yum:
+        name: nginx
+        state: present
+
+    - name: Start nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Clone repo
+      git:
+        repo: "https://github.com/Hemalathaboddula/Student-course-portal.git"
+        dest: /home/ec2-user/app
+        force: yes
+
+    - name: Fix permissions
+      shell: |
+        chown -R ec2-user:ec2-user /home/ec2-user/app
+
+    - name: Run migrations
+      command: python3 manage.py migrate
+      args:
+        chdir: /home/ec2-user/app
+
+    - name: Seed database
+      command: python3 manage.py shell -c "from courses.seed import seed_data; seed_data()"
+      args:
+        chdir: /home/ec2-user/app
+
+    - name: Run Django server
+      shell: |
+        pkill -f gunicorn || true
+        nohup gunicorn learnhub.wsgi:application --bind 0.0.0.0:8000 &
+      args:
+        chdir: /home/ec2-user/app
+      ignore_errors: yes
