@@ -1,0 +1,23 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+
+<h2>Courses</h2>
+
+<div class="row">
+
+{% for course in courses %}
+<div class="col-md-4">
+    <div class="card p-3 mb-3">
+        <h4>{{ course.course_name }}</h4>
+        <p>{{ course.faculty_name }}</p>
+        /course/{{ course.id }}/
+
+        /enroll/{{ course.id }}/Enroll</a>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

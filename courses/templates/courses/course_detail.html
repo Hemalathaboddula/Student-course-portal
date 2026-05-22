@@ -1,0 +1,23 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+
+<h2>{{ course.course_name }}</h2>
+
+<h5>Progress: {{ progress }}%</h5>
+
+{% for c in contents %}
+
+<div class="card p-3 mb-3">
+    <h4>{{ c.title }}</h4>
+    <p>{{ c.description }}</p>
+    
+    {{ c.video_url }}
+
+</div>
+
+{% endfor %}
+
+/test/{{ course.id }}/Take Test</a>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+---
+- name: Deploy Student Course Portal on EC2
+  hosts: web
+  become: yes
+
+  vars:
+    repo_url: "https://github.com/Hemalathaboddula/Student-course-portal.git"
+    dest_path: "/var/www/html"
+
+  tasks:
+
+    - name: Install required packages (nginx + git)
+      package:
+        name:
+          - nginx
+          - git
+        state: present
+
+    - name: Start and enable nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Remove default nginx content
+      file:
+        path: "{{ dest_path }}"
+        state: absent
+
+    - name: Clone Student Course Portal repo
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ dest_path }}"
+        version: master
+        force: yes
+
+    - name: Set permissions
+      file:
+        path: "{{ dest_path }}"
+        state: directory
+        mode: '0755'
+        recurse: yes
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted

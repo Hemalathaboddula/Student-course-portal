@@ -1,0 +1,29 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+
+<div class="text-center">
+
+    <h2>Your Score: {{ score }}</h2>
+
+    {% if score >= 2 %}
+        <p class="text-success">🎉 You Passed! Certificate Ready</p>
+
+        <a href="/certificate/{{ course_id }}/" class="btn btn-primary">
+            Download Certificate
+        </a>
+
+    {% else %}
+        <p class="text-danger">❌ Try Again</p>
+    {% endif %}
+
+    <br><br>
+
+    <a href="/my-courses/" class="btn btn-secondary">
+        Back to My Courses
+    </a>
+
+</div>
+
+{% endblock %}
+
