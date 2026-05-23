@@ -7,8 +7,10 @@ SECRET_KEY = 'django-secret-key'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']  
+# ✅ keep only once
+ALLOWED_HOSTS = ['*']
 
+# ✅ Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -17,26 +19,29 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'django_prometheus',  
+    'django_prometheus',   # ✅ monitoring
     'courses',
 ]
 
+# ✅ Middleware (important for monitoring)
 MIDDLEWARE = [
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',   
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django_prometheus.middleware.PrometheusAfterMiddleware',   
+
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'learnhub.urls'
 
 WSGI_APPLICATION = 'learnhub.wsgi.application'
 
-# ✅ DATABASE
+# ✅ Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
