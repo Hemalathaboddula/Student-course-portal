@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Course, Student
 
 
-# ✅ LOGIN
+# LOGIN
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -23,13 +23,13 @@ def login_view(request):
     return render(request, 'courses/login.html')
 
 
-# ✅ LOGOUT
+# LOGOUT
 def logout_view(request):
     logout(request)
     return redirect('login')
 
 
-# ✅ SIGNUP
+#  SIGNUP
 def signup_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -44,12 +44,12 @@ def signup_view(request):
     return render(request, 'courses/signup.html')
 
 
-# ✅ FORGOT PASSWORD
+# FORGOT PASSWORD
 def forgot_password_view(request):
     return render(request, 'courses/forgot.html')
 
 
-# ✅ DASHBOARD
+#  DASHBOARD
 @login_required
 def dashboard(request):
     courses = Course.objects.all()
@@ -63,7 +63,7 @@ def dashboard(request):
     })
 
 
-# ✅ ENROLL
+#  ENROLL
 @login_required
 def enroll(request, course_id):
     course = get_object_or_404(Course, id=course_id)
@@ -76,7 +76,7 @@ def enroll(request, course_id):
     return redirect('dashboard')
 
 
-# ✅ MY COURSES
+#  MY COURSES
 @login_required
 def my_courses(request):
     student, _ = Student.objects.get_or_create(user=request.user)

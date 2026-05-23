@@ -5,7 +5,7 @@ from .models import Course, Student
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('course_name', 'faculty_name', 'duration', 'rating', 'category')
 
-    # ✅ NO IMAGE FIELD HERE
+    # NO IMAGE FIELD HERE
     fields = (
         'course_name',
         'faculty_name',
