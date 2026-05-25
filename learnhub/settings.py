@@ -1,16 +1,15 @@
 from pathlib import Path
 import os
 
+#  Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#  Security
 SECRET_KEY = 'django-secret-key'
-
 DEBUG = True
-
-# ✅ keep only once
 ALLOWED_HOSTS = ['*']
 
-# ✅ Installed apps
+#  Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -19,11 +18,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'django_prometheus',   # ✅ monitoring
+    #  Monitoring
+    'django_prometheus',
+
+    #  app
     'courses',
 ]
 
-# ✅ Middleware (important for monitoring)
+# Middleware (with monitoring)
 MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
 
@@ -37,11 +39,30 @@ MIDDLEWARE = [
     'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
+#  URL config
 ROOT_URLCONF = 'learnhub.urls'
 
+#  TEMPLATES 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],   # optionally: [BASE_DIR / "templates"]
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+#  WSGI
 WSGI_APPLICATION = 'learnhub.wsgi.application'
 
-# ✅ Database
+# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -49,17 +70,22 @@ DATABASES = {
     }
 }
 
+#  Localization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
+USE_I18N = True
+USE_TZ = True
 
-# ✅ STATIC FILES
+#  Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# ✅ MEDIA FILES
+#  Media files
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+#  Default auto field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#  Login redirect
 LOGIN_URL = '/login/'
