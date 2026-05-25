@@ -9,24 +9,31 @@
 
   tasks:
 
-    - name: Install required packages (nginx + git)
-      package:
+    #  Install required packages
+    - name: Install required packages
+      apt:
         name:
           - nginx
           - git
+          - python3-pip
+          - python3-venv
         state: present
+        update_cache: yes
 
+    #  Start nginx
     - name: Start and enable nginx
       service:
         name: nginx
         state: started
         enabled: yes
 
-    - name: Remove default nginx content
+    #  Remove old code
+    - name: Remove old app
       file:
         path: "{{ dest_path }}"
         state: absent
 
+    #  Clone repo
     - name: Clone Student Course Portal repo
       git:
         repo: "{{ repo_url }}"
@@ -34,13 +41,44 @@
         version: master
         force: yes
 
-    - name: Set permissions
-      file:
-        path: "{{ dest_path }}"
-        state: directory
-        mode: '0755'
-        recurse: yes
+    #  Create virtual environment
+    - name: Create virtualenv
+      command: python3 -m venv venv
+      args:
+        chdir: "{{ dest_path }}"
 
+    #  Install requirements
+    - name: Install Python dependencies
+      pip:
+        requirements: "{{ dest_path }}/requirements.txt"
+        virtualenv: "{{ dest_path }}/venv"
+
+    #  Run migrations
+    - name: Run migrations
+      command: "{{ dest_path }}/venv/bin/python manage.py migrate"
+      args:
+        chdir: "{{ dest_path }}"
+
+    #  ADD HERE (THIS IS YOUR QUESTION ANSWER)
+    - name: Load initial data
+      command: "{{ dest_path }}/venv/bin/python manage.py loaddata courses"
+      args:
+        chdir: "{{ dest_path }}"
+      ignore_errors: yes
+
+    # Collect static files
+    - name: Collect static files
+      command: "{{ dest_path }}/venv/bin/python manage.py collectstatic --noinput"
+      args:
+        chdir: "{{ dest_path }}"
+
+    #  Start Gunicorn
+    - name: Start Gunicorn
+      shell: "{{ dest_path }}/venv/bin/gunicorn --daemon --bind 0.0.0.0:8000 learnhub.wsgi:application"
+      args:
+        chdir: "{{ dest_path }}"
+
+    #  Restart nginx
     - name: Restart nginx
       service:
         name: nginx
