@@ -1,0 +1,10 @@
+[
+  {
+    "model": "courses.course",
+    "pk": 1,
+    "fields": {
+      "title": "DevOps Basics",
+      "description": "Intro to DevOps"
+    }
+  }
+]
