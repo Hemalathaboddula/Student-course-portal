@@ -1,3 +1,6 @@
 Django==4.2
-gunicorn
-Pillow
+gunicorn==26.0.0
+django-prometheus==2.4.1
+pillow
+reportlab
+psycopg2-binary
