@@ -16,7 +16,13 @@ def login_view(request):
 
         if user:
             login(request, user)
+
+            # Admin → admin panel
+            if user.is_staff:
+                return redirect('/admin/')
+
             return redirect('dashboard')
+
         else:
             return render(request, 'courses/login.html', {'error': 'Invalid credentials'})
 
@@ -29,14 +35,14 @@ def logout_view(request):
     return redirect('login')
 
 
-#  SIGNUP
+# SIGNUP
 def signup_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
         if User.objects.filter(username=username).exists():
-            return render(request, 'courses/signup.html', {'error': 'Username already exists'})
+            return render(request, 'courses/signup.html', {'error': 'Username exists'})
 
         User.objects.create_user(username=username, password=password)
         return redirect('login')
@@ -44,30 +50,31 @@ def signup_view(request):
     return render(request, 'courses/signup.html')
 
 
-# FORGOT PASSWORD
-def forgot_password_view(request):
-    return render(request, 'courses/forgot.html')
-
-
-#  DASHBOARD
+# DASHBOARD (only students)
 @login_required
 def dashboard(request):
+
+    if request.user.is_staff:
+        return redirect('/admin/')
+
     courses = Course.objects.all()
 
     student, _ = Student.objects.get_or_create(user=request.user)
-    enrolled_courses = student.courses.all()
 
     return render(request, 'courses/dashboard.html', {
         'courses': courses,
-        'enrolled_courses': enrolled_courses
+        'enrolled_courses': student.courses.all()
     })
 
 
-#  ENROLL
+# ENROLL
 @login_required
 def enroll(request, course_id):
-    course = get_object_or_404(Course, id=course_id)
 
+    if request.user.is_staff:
+        return redirect('/admin/')
+
+    course = get_object_or_404(Course, id=course_id)
     student, _ = Student.objects.get_or_create(user=request.user)
 
     if course not in student.courses.all():
@@ -76,10 +83,15 @@ def enroll(request, course_id):
     return redirect('dashboard')
 
 
-#  MY COURSES
+# MY COURSES
 @login_required
 def my_courses(request):
-    student, _ = Student.objects.get_or_create(user=request.user)
-    courses = student.courses.all()
 
-    return render(request, 'courses/my_courses.html', {'courses': courses})
+    if request.user.is_staff:
+        return redirect('/admin/')
+
+    student, _ = Student.objects.get_or_create(user=request.user)
+
+    return render(request, 'courses/my_courses.html', {
+        'courses': student.courses.all()
+    })

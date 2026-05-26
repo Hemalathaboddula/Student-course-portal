@@ -1,15 +1,15 @@
 from pathlib import Path
 import os
 
-#  Base directory
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#  Security
+# Security
 SECRET_KEY = 'django-secret-key'
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
-#  Installed apps
+# Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -18,35 +18,27 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #  Monitoring
-    'django_prometheus',
-
-    #  app
     'courses',
 ]
 
-# Middleware (with monitoring)
+# Middleware
 MIDDLEWARE = [
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-
-    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
-#  URL config
+# URL config
 ROOT_URLCONF = 'learnhub.urls'
 
-#  TEMPLATES 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],   # optionally: [BASE_DIR / "templates"]
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,7 +51,7 @@ TEMPLATES = [
     },
 ]
 
-#  WSGI
+# WSGI
 WSGI_APPLICATION = 'learnhub.wsgi.application'
 
 # Database
@@ -70,22 +62,24 @@ DATABASES = {
     }
 }
 
-#  Localization
+# Localization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
-#  Static files
+# Static
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-#  Media files
+# Media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#  Default auto field
+# Default field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#  Login redirect
+# Auth redirects
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/'

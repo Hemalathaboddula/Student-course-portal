@@ -1,21 +1,15 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from courses import views
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    #  default page → login
-    path('', views.login_view),
+    path('', views.login_view, name='login'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('signup/', views.signup_view, name='signup'),
+    path('logout/', views.logout_view, name='logout'),
 
-    #  app routes
-    path('', include('courses.urls')),
-
-    # monitoring endpoint
-    path('', include('django_prometheus.urls')),
+    path('enroll/<int:course_id>/', views.enroll, name='enroll'),
+    path('my-courses/', views.my_courses, name='my_courses'),
 ]
-
-# media files
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
