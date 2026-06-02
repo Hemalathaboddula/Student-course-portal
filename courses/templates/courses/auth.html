@@ -1,0 +1,64 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+
+<div class="login-body">
+
+    <div class="login-container">
+
+        <h1 class="logo">LearnHub</h1>
+
+        <!-- LOGIN FORM -->
+        <div id="login-form">
+            <form method="POST" action="/login/">
+                {% csrf_token %}
+                <h3>Login</h3>
+
+                <input type="text" name="username" placeholder="Username" class="input-box">
+                <input type="password" name="password" placeholder="Password" class="input-box">
+
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+
+            <p onclick="toggleForm()" style="cursor:pointer;color:blue;">
+                Create Account
+            </p>
+        </div>
+
+        <!-- SIGNUP FORM -->
+        <div id="signup-form" style="display:none;">
+            <form method="POST" action="/signup/">
+                {% csrf_token %}
+                <h3>Sign Up</h3>
+
+                <input type="text" name="username" placeholder="Username" class="input-box">
+                <input type="password" name="password" placeholder="Password" class="input-box">
+
+                <button type="submit" class="login-btn">Create Account</button>
+            </form>
+
+            <p onclick="toggleForm()" style="cursor:pointer;color:blue;">
+                Already have account? Login
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function toggleForm() {
+    let login = document.getElementById("login-form");
+    let signup = document.getElementById("signup-form");
+
+    if (login.style.display === "none") {
+        login.style.display = "block";
+        signup.style.display = "none";
+    } else {
+        login.style.display = "none";
+        signup.style.display = "block";
+    }
+}
+</script>
+
+{% endblock %}
